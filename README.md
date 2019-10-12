@@ -1,2 +1,2 @@
-# mite
+# mix
 some small programs
