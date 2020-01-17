@@ -82,7 +82,7 @@ class credit(object):
             pylab.xlabel('age [years]')
             pylab.xlim( self.age0-1, min( self.y_done + self.age0, 100 )+1 )
             if self.age1 < self.y_done + self.age0:
-                pylab.axvline( self.age1, color='b' )
+                pylab.axvline( self.age1, color='m' )
         pylab.plot( x[:self.y_done], self.debt_y[:self.y_done]/self.unit, 'k-', \
             marker='s', markersize=5, linewidth=2 )
         pylab.plot( x[:self.y_done], self.expense_y[:self.y_done]/self.unit, 'b-', \
