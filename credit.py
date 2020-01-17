@@ -45,7 +45,7 @@ class credit(object):
             self.debt_y[y] = debt_m * ( debt_m > 0 )
             self.expense_y[y] = expense_m 
         
-        # find year when debt hits crosses zero line
+        # find year when debt crosses zero line
         self.y_done = numpy.searchsorted( -self.debt_y, 0 ) + 1
     
         self.bank_profit    = self.expense_y[-1] - self.capital - self.debt_y[0]
@@ -72,7 +72,7 @@ class credit(object):
             ', int.:'+str(self.interest_rate)+\
             ', m.r.:'+str(self.monthly_rate/self.unit) )
         
-        # if we don't 'know the starting age, plot as a function of time
+        # if we don't know the starting age, plot as a function of time
         if self.age0==None:
             x = self.years
             pylab.xlabel('time [years]')
