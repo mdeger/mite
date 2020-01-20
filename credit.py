@@ -49,7 +49,7 @@ class credit(object):
         self.y_done = numpy.searchsorted( -self.debt_y, 0 ) + 1
     
         self.bank_profit    = self.expense_y[-1] - self.capital - self.debt_y[0]
-        self.bank_profit_ratio = self.bank_profit / self.debt_y[0]
+        self.bank_profit_ratio = self.bank_profit / float( self.debt_y[0] )
 
         # print main results
         print('total debt:      '+str( self.debt_y[0] ))
