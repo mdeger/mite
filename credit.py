@@ -82,20 +82,22 @@ class credit(object):
             pylab.xlabel('age [years]')
             pylab.xlim( self.age0-1, min( self.y_done + self.age0, 100 )+1 )
             if self.age1 < self.y_done + self.age0:
-                pylab.axvline( self.age1, color='m' )
+                pylab.axvline( self.age1, color='m', label=str(self.age1) )
         pylab.plot( x[:self.y_done], self.debt_y[:self.y_done]/self.unit, 'k-', \
-            marker='s', markersize=5, linewidth=2 )
+            marker='s', markersize=5, linewidth=2, label='debt' )
         pylab.plot( x[:self.y_done], self.expense_y[:self.y_done]/self.unit, 'b-', \
-            marker='o', markersize=3, linewidth=2 )
+            marker='o', markersize=3, linewidth=2, label='expenses' )
         pylab.axhline( 0., color='k' )
-        pylab.axhline( self.debt_y[0]/self.unit, color='g' )
-        pylab.axhline( self.expense_y[-1]/self.unit, color='r' )
+        pylab.axhline( self.debt_y[0]/self.unit, color='g', label='initial exp.' )
+        pylab.axhline( self.expense_y[-1]/self.unit, color='r', label='total exp.' )
         # show in units of self.unit (whatever currency)
         pylab.ylabel('debt ['+str(self.unit)+']')
+        pylab.legend( loc='best' )
         pylab.show()
 
 
 # example usage (pass arguments to modify parameters)
+print('usage hint: run function credit() or check syntax using credit?')
 c = credit()
 
 
