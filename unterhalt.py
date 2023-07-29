@@ -1,7 +1,7 @@
 #
 #
-# Kindesunterhaltsrechner gemaess Duesseldorfer Tabelle fuer fuer privat
-# Krankenversicherte Unterhaltspflichtige
+# Kindesunterhaltsrechner gemaess Duesseldorfer Tabelle fuer privat
+# krankenversicherte Unterhaltspflichtige
 #
 # 28.07.2023, Moritz Deger, https://github.com/mdeger
 
@@ -30,10 +30,10 @@ DusTabNotwdgSelbstBehaltWohnKosten  =  520
 class KindesUnterhalt:
 
     def __init__(self):
-        '''Kindesunterhaltsrechner fuer privat Krankenversicherte 
+        '''Kindesunterhaltsrechner fuer privat krankenversicherte 
         Unterhaltspflichtige
         Anwendungsablauf:
-        0. Klasse instantiieren mittels __init__()
+        0. Klasse instantiieren mittels __init__() (automatisch bei Aufruf)
         1. Parameter der Instanz setzen (Brutto, AbzuegeNetto, AbzuegeBerNetto, 
            Wohnkosten, KinderGeburtstage, ggf. Stichtag)
         2. Auswerten mittels get_KindesUnterhalt()
@@ -99,7 +99,7 @@ class KindesUnterhalt:
     
     
     def get_KindesUnterhalt_idx( self, idx, MinU=False ):
-        """bestimmt den Kindesunterhalt aus der Tabelle"""
+        """liest den Kindesunterhalt aus der Tabelle aus"""
         AlterD = self.Stichtag - self.KinderGeburtstage[idx]
         AlterY = AlterD.astype(int) / 365
         AlterIdx = DusTabAlterMin.searchsorted( AlterY + 0.1 ) - 1
@@ -111,6 +111,7 @@ class KindesUnterhalt:
     
     
     def get_KindesUnterhalt(self):
+        """Berechnung des Kindesunterhalts"""
         self.get_Netto()
         self.get_BerNetto()
 
