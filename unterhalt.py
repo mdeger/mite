@@ -144,7 +144,7 @@ class KindesUnterhalt:
     
     def print_Result(self):
         """Ausgabe der Berechnungsergebnisse"""
-        print('\n' +'Kindesunterhaltsberechnung nach Duesseldorfer Tabelle '+str(DusTabV)+':')
+        print('\n' +'Kindesunterhaltsberechnung nach Duesseldorfer Tabelle '+str(DusTabV)+'\nzum Stichtag '+self.Stichtag.astype(str)+':\n==========================================================')
         print('Geburtsdaten der Kinder:')
         for i in range(len(self.KinderGeburtstage)):
             print( '  '+ self.KinderGeburtstage[i].astype(str) )
@@ -166,10 +166,10 @@ class KindesUnterhalt:
             print('davon beruecksichtigt in notw. Eigenbedarf: '+"{:.2f}".format(DusTabNotwdgSelbstBehaltWohnKosten))
             print('ergibt Notwendiger Eigenbedarf mit tats. Wohnk.: '+"{:.2f}".format(self.SelbstBehalt))
             print('\n'+'Verteilungsmasse: '+ "{:.2f}".format( self.VerteilungsMasse ))
-            print('\n'+'Kind:         Einsatzbetrag:       Unterhalt:')
+            print('\n'+'Kind:         Einsatzbetrag:      Unterhalt:')
         else:
             print('Unterhaltsstufe '+str(self.Stufe))
-            print('\n'+'Kind:         Mindestbetrag:       Unterhalt:')
+            print('\n'+'Kind:         Mindestbetrag:      Unterhalt:')
 
         # Ausgabe der Unterhalszahlbetraege
         for i in range(len(self.KinderGeburtstage)):
@@ -177,8 +177,8 @@ class KindesUnterhalt:
                 + "{:.2f}".format(self.ZahlBetragMinU[i]) + '             ' \
                 + "{:.2f}".format( self.ZahlBetrag[i] ))
         
-        print ('\n' + 'Gesamt' + '           ' \
-                + "{:.2f}".format(self.ZahlBetragMinU[:self.KinderSummenEndIndex].sum()) + '            ' \
+        print ('\n' + '(Teil-)Summe' + '    ' \
+                + "{:.2f}".format(self.ZahlBetragMinU[:self.KinderSummenEndIndex].sum()) + '             ' \
                 + "{:.2f}".format( self.ZahlBetrag[:self.KinderSummenEndIndex].sum() ))
         
         
