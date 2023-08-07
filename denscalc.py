@@ -3,8 +3,6 @@
 # https://www.georgrieger.com/en/density-determination-instrument/dichtebestimmungsgeraet-heinrich-fuer-rohrholz.html
 #
 
-import numpy
-
 n = 1
 stats = {}
 print("\n\n\n\n\n\n")
@@ -18,7 +16,7 @@ def print_stats():
     for k in keys:
         nk = stats[k]
         p = int( round( float( nk ) / n * 100., 0 ) )
-        print( str(k)+'     '+str(nk)+'     '+str(p)+'%' )
+        print( "{:.2f}".format(k)+'     '+str(nk)+'     '+str(p)+'%' )
 
 
 while True:
@@ -39,7 +37,7 @@ while True:
         print("[ERROR] could not compute density. Make sure to enter valid numbers!")
         continue
 
-    density = numpy.round( dens, decimals=2 )
+    density = round( dens, 2 )
     print("density = " + str( density))
 
     "register in running statistics dictionary and print statistics"
