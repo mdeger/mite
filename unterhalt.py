@@ -145,9 +145,6 @@ class KindesUnterhalt:
     def print_Result(self):
         """Ausgabe der Berechnungsergebnisse"""
         print('\n' +'Kindesunterhaltsberechnung nach Duesseldorfer Tabelle '+str(DusTabV)+'\nzum Stichtag '+self.Stichtag.astype(str)+':\n==========================================================')
-        print('Geburtsdaten der Kinder:')
-        for i in range(len(self.KinderGeburtstage)):
-            print( '  '+ self.KinderGeburtstage[i].astype(str) )
         print('\n' +'--- Einkommensberechnung ---')
         print('Bruttoeinkommen: ' + str(self.Brutto))
         for key in self.AbzuegeNetto:
