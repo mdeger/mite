@@ -6,10 +6,24 @@
 import numpy
 
 n = 1
+stats = {}
 print("\n\n\n\n\n\n")
+
+
+def print_stats():
+    """print running density statistic"""
+    keys = stats.keys()
+    keys.sort()
+    print('\nrunning density statistics:')
+    for k in keys:
+        nk = stats[k]
+        p = int( round( float( nk ) / n * 100., 0 ) )
+        print( str(k)+'     '+str(nk)+'     '+str(p)+'%' )
+
 
 while True:
     print("\n--------------------------------\n")
+    
     print("density computation number "+str(n)+": \n")
 
     try:
@@ -25,6 +39,15 @@ while True:
         print("[ERROR] could not compute density. Make sure to enter valid numbers!")
         continue
 
-    print("density = " + str( numpy.round( dens, decimals=2 )))
+    density = numpy.round( dens, decimals=2 )
+    print("density = " + str( density))
+
+    "register in running statistics dictionary and print statistics"
+    if density in stats.keys():
+        stats[density] += 1
+    else:
+        stats[density] = 1
+    print_stats()
+    
     n += 1
 
