@@ -10,7 +10,7 @@ print("\n\n\n\n\n\n")
 
 def print_stats():
     """print running density statistic"""
-    keys = stats.keys()
+    keys = list( stats.keys() )
     keys.sort()
     print('\nrunning density statistics:')
     for k in keys:
