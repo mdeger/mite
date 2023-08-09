@@ -57,6 +57,8 @@ class KindesUnterhalt:
         self.KinderGeburtstage = np.array([\
             np.datetime64('2011-11-11'), \
             np.datetime64('2012-12-12')])
+        self.KinderMinUFaktor = \
+            np.ones( len(self.KinderGeburtstage), dtype=float)
         self.Stichtag          = np.datetime64( date.today() )
         self.SelbstBehaltReduktionsFaktor = 0.
         self.KinderSummenEndIndex = len(self.KinderGeburtstage)
@@ -112,7 +114,8 @@ class KindesUnterhalt:
             StufeIdx = 0
         else:
             StufeIdx = self.StufeIdx
-        return DusTabZahlBetrag[ StufeIdx, AlterIdx + 2 ] # Offset of 2!
+        return DusTabZahlBetrag[ StufeIdx, AlterIdx + 2 ] *\
+            self.KinderMinUFaktor[idx] # Offset of 2! 
     
     
     def get_KindesUnterhalt(self):
