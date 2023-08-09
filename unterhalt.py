@@ -58,6 +58,7 @@ class KindesUnterhalt:
             np.datetime64('2011-11-11'), \
             np.datetime64('2012-12-12')])
         self.Stichtag          = np.datetime64( date.today() )
+        self.SelbstBehaltReduktionsFaktor = 0.
         self.KinderSummenEndIndex = len(self.KinderGeburtstage)
     
     
@@ -79,8 +80,9 @@ class KindesUnterhalt:
         self.BerNetto = self.Netto - self.BerBedAufwdg
         if Mangelfall:
             # Vorauswertung fuer etwaigen Mangelfall
-            self.SelbstBehalt = DusTabNotwdgSelbstBehalt \
-                + self.Wohnkosten - DusTabNotwdgSelbstBehaltWohnKosten
+            self.SelbstBehalt = ( DusTabNotwdgSelbstBehalt \
+                + self.Wohnkosten - DusTabNotwdgSelbstBehaltWohnKosten ) *\
+                (1. - self.SelbstBehaltReduktionsFaktor)
             self.VerteilungsMasse = self.BerNetto - self.SelbstBehalt
         else:
             self.AbzuegeBerNetto['Altersvorsorge'] = \
@@ -161,6 +163,8 @@ class KindesUnterhalt:
             print('Notwendiger Eigenbedarf nach Tabelle: ' +"{:.2f}".format(DusTabNotwdgSelbstBehalt))
             print('Wohnkosten (Warmmiete): '+"{:.2f}".format(self.Wohnkosten))
             print('davon beruecksichtigt in notw. Eigenbedarf: '+"{:.2f}".format(DusTabNotwdgSelbstBehaltWohnKosten))
+            if not self.SelbstBehaltReduktionsFaktor==0.:
+                print('Selbstbehalt reduziert um Anteil ' + str(self.SelbstBehaltReduktionsFaktor)+'.')
             print('ergibt Notwendiger Eigenbedarf mit tats. Wohnk.: '+"{:.2f}".format(self.SelbstBehalt))
             print('\n'+'Verteilungsmasse: '+ "{:.2f}".format( self.VerteilungsMasse ))
             print('\n'+'Kind:         Einsatzbetrag:      Unterhalt:')
@@ -177,5 +181,8 @@ class KindesUnterhalt:
         print ('\n' + '(Teil-)Summe' + '    ' \
                 + "{:.2f}".format(self.ZahlBetragMinU[:self.KinderSummenEndIndex].sum()) + '             ' \
                 + "{:.2f}".format( self.ZahlBetrag[:self.KinderSummenEndIndex].sum() ))
-        
-        
+        print ('\nBer. Netto abzgl. Unterhalt:       '+ \
+            "{:.2f}".format( self.BerNetto - self.ZahlBetragGesamt ))
+
+
+
