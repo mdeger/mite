@@ -164,11 +164,12 @@ class KindesUnterhalt:
         if self.IstMangelFall:
             print('Mangelfall mit Deckungsfaktor ' + "{:.2f}".format( np.round(self.Deckungsfaktor, 2)))
             print('Notwendiger Eigenbedarf nach Tabelle: ' +"{:.2f}".format(DusTabNotwdgSelbstBehalt))
-            print('Wohnkosten (Warmmiete): '+"{:.2f}".format(self.Wohnkosten))
-            print('davon beruecksichtigt in notw. Eigenbedarf: '+"{:.2f}".format(DusTabNotwdgSelbstBehaltWohnKosten))
+            if self.Wohnkosten != DusTabNotwdgSelbstBehaltWohnKosten:
+                print('Wohnkosten (Warmmiete): '+"{:.2f}".format(self.Wohnkosten))
+                print('davon beruecksichtigt in notw. Eigenbedarf: '+"{:.2f}".format(DusTabNotwdgSelbstBehaltWohnKosten))
             if not self.SelbstBehaltReduktionsFaktor==0.:
                 print('Selbstbehalt reduziert um Anteil ' + str(self.SelbstBehaltReduktionsFaktor)+'.')
-            print('ergibt Notwendiger Eigenbedarf mit tats. Wohnk.: '+"{:.2f}".format(self.SelbstBehalt))
+            print('ergibt Notwendiger Eigenbedarf: '+"{:.2f}".format(self.SelbstBehalt))
             print('\n'+'Verteilungsmasse: '+ "{:.2f}".format( self.VerteilungsMasse ))
             print('\n'+'Kind:         Einsatzbetrag:      Unterhalt:')
         else:
