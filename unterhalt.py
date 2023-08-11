@@ -141,9 +141,20 @@ class KindesUnterhalt:
             self.get_BerNetto( False )
             self.get_UnterhaltsStufenMod()
             self.get_UnterhaltsStufe()
-            self.ZahlBetrag = np.array([ self.get_KindesUnterhalt_idx( i ) \
-                for i in range( len( self.KinderGeburtstage) ) ])
-        
+            fin_ = False
+            while not fin_:
+                self.ZahlBetrag = np.array([ self.get_KindesUnterhalt_idx( i ) \
+                    for i in range( len( self.KinderGeburtstage) ) ])
+                # pruefen, ob Selbstbehalt unterschritten wird
+                if self.ZahlBetrag.sum() <= self.VerteilungsMasse:
+                    fin_ = True
+                elif self.Stufe > 1:
+                    print( 'Unterhaltssumme in Stufe '+str(self.Stufe)+' gefaehrdet Selbstbehalt. Stufe wird reduziert.' )
+                    self.StufeIdx = self.StufeIdx - 1
+                    self.Stufe = self.Stufe - 1
+                else:
+                    print( 'Unterhaltssumme in Stufe '+str(self.Stufe)+' gefaehrdet Selbstbehalt. Verdeckter Mangelfall?' )
+                    assert(False)
         self.ZahlBetragGesamt = np.sum( self.ZahlBetrag )
     
     
