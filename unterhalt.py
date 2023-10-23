@@ -24,6 +24,10 @@ DusTabZahlBetrag = np.array([\
     [       4,           3100,   378,    453,    552,      473,   115],
     [       5,           3500,   400,    478,    581,      504,   120],
     [       6,           3900,   435,    518,    628,      554,   128],
+    [       7,           4300,   470,    558,    675,      605,   136],
+    [       8,           4700,   505,    598,    722,      655,   144],
+    [       9,           5100,   540,    639,    769,      705,   152],
+    [      10,           5500,   575,    679,    816,      755,   160],
     ])
 DusTabNotwdgSelbstBehalt            = 1370
 DusTabNotwdgSelbstBehaltWohnKosten  =  520
@@ -196,7 +200,9 @@ class KindesUnterhalt:
         print ('\n' + '(Teil-)Summe' + '    ' \
                 + "{:.2f}".format(self.ZahlBetragMinU[:self.KinderSummenEndIndex].sum()) + '             ' \
                 + "{:.2f}".format( self.ZahlBetrag[:self.KinderSummenEndIndex].sum() ))
-        print ('\nBer. Netto abzgl. Unterhalt-Teilsumme:    '+ \
+        print ('\n     Netto abzgl. Unterhalt-Teilsumme:    '+ \
+            "{:.2f}".format( self.Netto - self.ZahlBetrag[:self.KinderSummenEndIndex].sum() ))
+        print ('Ber. Netto abzgl. Unterhalt-Teilsumme:    '+ \
             "{:.2f}".format( self.BerNetto - self.ZahlBetrag[:self.KinderSummenEndIndex].sum() ))
         print ('Ber. Netto abzgl. Gesamt-Unterhalt:       '+ \
             "{:.2f}".format( self.BerNetto - self.ZahlBetragGesamt ))
