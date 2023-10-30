@@ -168,7 +168,12 @@ class KindesUnterhalt:
         print('\n' +'--- Einkommensberechnung ---')
         print('Bruttoeinkommen: ' + str(self.Brutto))
         for key in self.AbzuegeNetto:
-            print('./ ab '+ key + ': '+ "{:.2f}".format( self.AbzuegeNetto[key]))
+            # zzgl oder abzgl.?
+            if self.AbzuegeNetto[key] > 0:
+                zzglabzgl = 'abzgl. '
+            else:
+                zzglabzgl = 'zuzgl. '
+            print('./ '+zzglabzgl + key + ': '+ "{:.2f}".format( self.AbzuegeNetto[key]))
         print('Nettoeinkommen: '+ "{:.2f}".format( self.Netto))
         print('./ ab berufsbedingte Aufwendungen '+"{:.2f}".format(self.BerBedAufwdg))
         if not self.IstMangelFall:
