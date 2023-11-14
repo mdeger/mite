@@ -206,12 +206,17 @@ class KindesUnterhalt:
         print ('\n' + '(Teil-)Summe' + '    ' \
                 + "{:.2f}".format(self.ZahlBetragMinU[:self.KinderSummenEndIndex].sum()) + '             ' \
                 + "{:.2f}".format( self.ZahlBetrag[:self.KinderSummenEndIndex].sum() ))
+
+        self.vbld_Netto    = self.Netto - self.ZahlBetrag[:self.KinderSummenEndIndex].sum()
+        self.vbld_BerNetto = self.BerNetto - self.ZahlBetrag[:self.KinderSummenEndIndex].sum()
+        self.vbld_BerNetto_UGes = self.BerNetto - self.ZahlBetragGesamt
+
         print ('\n     Netto abzgl. Unterhalt-Teilsumme:    '+ \
-            "{:.2f}".format( self.Netto - self.ZahlBetrag[:self.KinderSummenEndIndex].sum() ))
+            "{:.2f}".format( self.vbld_Netto ))
         print ('Ber. Netto abzgl. Unterhalt-Teilsumme:    '+ \
-            "{:.2f}".format( self.BerNetto - self.ZahlBetrag[:self.KinderSummenEndIndex].sum() ))
+            "{:.2f}".format( self.vbld_BerNetto ))
         print ('Ber. Netto abzgl. Gesamt-Unterhalt:       '+ \
-            "{:.2f}".format( self.BerNetto - self.ZahlBetragGesamt ))
+            "{:.2f}".format( self.vbld_BerNetto_UGes ))
 
 
 
