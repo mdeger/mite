@@ -31,6 +31,7 @@ DusTabZahlBetrag = np.array([\
     ])
 DusTabNotwdgSelbstBehalt            = 1370
 DusTabNotwdgSelbstBehaltWohnKosten  =  520
+DusTabAngemSelbstBehalt             = 1650
 
 
 
