@@ -32,7 +32,9 @@ DusTabZahlBetrag = np.array([\
 DusTabNotwdgSelbstBehalt            = 1450
 DusTabNotwdgSelbstBehaltWohnKosten  =  520
 DusTabAngemSelbstBehalt             = 1750
-
+DusTabBedarfsKontrollBetrag         = \
+    np.array([ DusTabNotwdgSelbstBehalt, 1750, 1850, 1950, 2050, 2150, 2250,\
+    2350, 2450, 2550, 2850, 3250, 3750, 4350, 5050 ])
 
 
 class KindesUnterhalt:
@@ -126,9 +128,9 @@ class KindesUnterhalt:
     def get_KindesUnterhalt(self):
         """Berechnung des Kindesunterhalts"""
         self.get_Netto()
-        self.get_BerNetto()
 
         # Mangelfallpruefung
+        self.get_BerNetto( True )
         self.ZahlBetragMinU = \
             np.array([ self.get_KindesUnterhalt_idx( i, MinU=True ) \
             for i in range( len( self.KinderGeburtstage) ) ])
@@ -150,18 +152,22 @@ class KindesUnterhalt:
             while not fin_:
                 self.ZahlBetrag = np.array([ self.get_KindesUnterhalt_idx( i ) \
                     for i in range( len( self.KinderGeburtstage) ) ])
-                # pruefen, ob Selbstbehalt unterschritten wird
-                if self.ZahlBetrag.sum() <= self.VerteilungsMasse:
-                    fin_ = True
-                elif self.Stufe > 1:
-                    print( 'Unterhaltssumme in Stufe '+str(self.Stufe)+\
-                        ' gefaehrdet Selbstbehalt. Stufe wird reduziert.' )
-                    self.StufeIdx = self.StufeIdx - 1
-                    self.Stufe = self.Stufe - 1
+                # pruefen, ob Bedarfskontrollbetrag unterschritten
+                if self.BerNetto - self.ZahlBetrag.sum() < \
+                    DusTabBedarfsKontrollBetrag[self.StufeIdx]:
+                    if self.Stufe > 1:
+                        print( 'Unterhaltssumme in Stufe '+str(self.Stufe)+\
+                            ' gefaehrdet Bedarfskontrollbetrag. Stufe wird '+\
+                            'reduziert.' )
+                        self.StufeIdx = self.StufeIdx - 1
+                        self.Stufe = self.Stufe - 1
+                    else:
+                        print( 'Unterhaltssumme in Stufe '+str(self.Stufe)+\
+                            ' unterschreitet Bedarfskontrollbetrag aber '+\
+                            'Stufe 1 ist bereits erreicht. Mangelfall?')
+                        fin_ = True
                 else:
-                    print( 'Unterhaltssumme in Stufe '+str(self.Stufe)+\
-                        ' gefaehrdet Selbstbehalt. Verdeckter Mangelfall?' )
-                    assert(False)
+                    fin_ = True
         self.ZahlBetragGesamt = np.sum( self.ZahlBetrag )
     
     
