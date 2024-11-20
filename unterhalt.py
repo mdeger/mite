@@ -154,18 +154,22 @@ class KindesUnterhalt:
                 if self.ZahlBetrag.sum() <= self.VerteilungsMasse:
                     fin_ = True
                 elif self.Stufe > 1:
-                    print( 'Unterhaltssumme in Stufe '+str(self.Stufe)+' gefaehrdet Selbstbehalt. Stufe wird reduziert.' )
+                    print( 'Unterhaltssumme in Stufe '+str(self.Stufe)+\
+                        ' gefaehrdet Selbstbehalt. Stufe wird reduziert.' )
                     self.StufeIdx = self.StufeIdx - 1
                     self.Stufe = self.Stufe - 1
                 else:
-                    print( 'Unterhaltssumme in Stufe '+str(self.Stufe)+' gefaehrdet Selbstbehalt. Verdeckter Mangelfall?' )
+                    print( 'Unterhaltssumme in Stufe '+str(self.Stufe)+\
+                        ' gefaehrdet Selbstbehalt. Verdeckter Mangelfall?' )
                     assert(False)
         self.ZahlBetragGesamt = np.sum( self.ZahlBetrag )
     
     
     def print_Result(self):
         """Ausgabe der Berechnungsergebnisse"""
-        print('\n' +'Kindesunterhaltsberechnung nach Duesseldorfer Tabelle '+str(DusTabV)+'\nzum Stichtag '+self.Stichtag.astype(str)+':\n==========================================================')
+        print('\n' +'Kindesunterhaltsberechnung nach Duesseldorfer Tabelle '+\
+            str(DusTabV)+'\nzum Stichtag '+self.Stichtag.astype(str)+\
+            ':\n==========================================================')
         print('\n' +'--- Einkommensberechnung ---')
         print('Bruttoeinkommen: ' + str(self.Brutto))
         for key in self.AbzuegeNetto:
@@ -174,24 +178,33 @@ class KindesUnterhalt:
                 zzglabzgl = 'abzgl. '
             else:
                 zzglabzgl = 'zuzgl. '
-            print('./ '+zzglabzgl + key + ': '+ "{:.2f}".format( self.AbzuegeNetto[key]))
+            print('./ '+zzglabzgl + key + ': '+ \
+                "{:.2f}".format( self.AbzuegeNetto[key]))
         print('Nettoeinkommen: '+ "{:.2f}".format( self.Netto))
-        print('./ ab berufsbedingte Aufwendungen '+"{:.2f}".format(self.BerBedAufwdg))
+        print('./ ab berufsbedingte Aufwendungen '+\
+            "{:.2f}".format(self.BerBedAufwdg))
         if not self.IstMangelFall:
             for key in self.AbzuegeBerNetto:
-                print('./ ab '+ key + ': '+ "{:.2f}".format( self.AbzuegeBerNetto[key]))
+                print('./ ab '+ key + ': '+ \
+                    "{:.2f}".format( self.AbzuegeBerNetto[key]))
         print('Bereinigtes Nettoeinkommen: '+ "{:.2f}".format( self.BerNetto))
         print('\n' + '--- Unterhaltsberechnung ---')
         if self.IstMangelFall:
-            print('Mangelfall mit Deckungsfaktor ' + "{:.2f}".format( np.round(self.Deckungsfaktor, 2)))
-            print('Notwendiger Eigenbedarf nach Tabelle: ' +"{:.2f}".format(DusTabNotwdgSelbstBehalt))
+            print('Mangelfall mit Deckungsfaktor ' + \
+                "{:.2f}".format( np.round(self.Deckungsfaktor, 2)))
+            print('Notwendiger Eigenbedarf nach Tabelle: ' \
+                +"{:.2f}".format(DusTabNotwdgSelbstBehalt))
             if self.Wohnkosten != DusTabNotwdgSelbstBehaltWohnKosten:
-                print('Wohnkosten (Warmmiete): '+"{:.2f}".format(self.Wohnkosten))
+                print('Wohnkosten (Warmmiete): '+\
+                    "{:.2f}".format(self.Wohnkosten))
                 print('davon beruecksichtigt in notw. Eigenbedarf: '+"{:.2f}".format(DusTabNotwdgSelbstBehaltWohnKosten))
             if not self.SelbstBehaltReduktionsFaktor==0.:
-                print('Selbstbehalt reduziert um Anteil ' + str(self.SelbstBehaltReduktionsFaktor)+'.')
-            print('ergibt Notwendiger Eigenbedarf: '+"{:.2f}".format(self.SelbstBehalt))
-            print('\n'+'Verteilungsmasse: '+ "{:.2f}".format( self.VerteilungsMasse ))
+                print('Selbstbehalt reduziert um Anteil ' + \
+                    str(self.SelbstBehaltReduktionsFaktor)+'.')
+            print('ergibt Notwendiger Eigenbedarf: '\
+                +"{:.2f}".format(self.SelbstBehalt))
+            print('\n'+'Verteilungsmasse: '\
+                + "{:.2f}".format( self.VerteilungsMasse ))
             print('\n'+'Kind:         Einsatzbetrag:      Unterhalt:')
         else:
             print('Unterhaltsstufe '+str(self.Stufe))
@@ -204,11 +217,15 @@ class KindesUnterhalt:
                 + "{:.2f}".format( self.ZahlBetrag[i] ))
         
         print ('\n' + '(Teil-)Summe' + '    ' \
-                + "{:.2f}".format(self.ZahlBetragMinU[:self.KinderSummenEndIndex].sum()) + '             ' \
-                + "{:.2f}".format( self.ZahlBetrag[:self.KinderSummenEndIndex].sum() ))
+            + "{:.2f}".format(self.ZahlBetragMinU[:self.KinderSummenEndIndex]\
+                .sum()) + '             ' \
+            + "{:.2f}".format( self.ZahlBetrag[:self.KinderSummenEndIndex]\
+                .sum() ))
 
-        self.vbld_Netto    = self.Netto - self.ZahlBetrag[:self.KinderSummenEndIndex].sum()
-        self.vbld_BerNetto = self.BerNetto - self.ZahlBetrag[:self.KinderSummenEndIndex].sum()
+        self.vbld_Netto    = self.Netto - \
+            self.ZahlBetrag[:self.KinderSummenEndIndex].sum()
+        self.vbld_BerNetto = self.BerNetto - \
+            self.ZahlBetrag[:self.KinderSummenEndIndex].sum()
         self.vbld_BerNetto_UGes = self.BerNetto - self.ZahlBetragGesamt
 
         print ('\n     Netto abzgl. Unterhalt-Teilsumme:    '+ \
