@@ -11,24 +11,25 @@ import numpy as np
 from datetime import date
 
 
-# aktuelle Duesseldorfer Tabelle (Stand 2023)
-DusTabV          = 2024
+# Duesseldorfer Tabelle 2025
+DusTabV          = 2025
 # Angaben aus der Tabelle
 DusTabAlterMin   = np.array( [0, 6, 12, 18] )
 DusTabLabels     = np.array( \
     [ "Stufe",  "BerNettoMax",  "0-5",  "6-11", "12-17",    "ab 18",    "%" ])
 DusTabZahlBetrag = np.array([\
-    [       1,           2100,   355,    426,    520,      439,   100],
-    [       2,           2500,   379,    454,    553,      474,   105],
-    [       3,           2900,   403,    482,    585,      508,   110],
-    [       4,           3300,   427,    509,    617,      543,   115],
-    [       5,           3700,   451,    537,    649,      577,   120],
-    [       6,           4100,   490,    581,    701,      632,   128],
-    [       7,           4500,   528,    625,    753,      688,   136],
-    [       8,           4900,   567,    669,    804,      743,   144],
-    [       9,           5300,   605,    713,    856,      798,   152],
-    [      10,           5700,   643,    757,    907,      853,   160],
+    [       1,           2100,   357,    429,    524,      443,   100],
+    [       2,           2500,   382,    457,    557,      478,   105],
+    [       3,           2900,   406,    485,    589,      513,   110],
+    [       4,           3300,   430,    513,    622,      547,   115],
+    [       5,           3700,   454,    540,    654,      582,   120],
+    [       6,           4100,   492,    585,    706,      638,   128],
+    [       7,           4500,   531,    629,    758,      693,   136],
+    [       8,           4900,   570,    673,    810,      748,   144],
+    [       9,           5300,   608,    718,    862,      804,   152],
+    [      10,           5700,   647,    762,    914,      859,   160],
     ])
+
 DusTabNotwdgSelbstBehalt            = 1450
 DusTabNotwdgSelbstBehaltWohnKosten  =  520
 DusTabAngemSelbstBehalt             = 1750
@@ -69,6 +70,7 @@ class KindesUnterhalt:
         self.Stichtag          = np.datetime64( date.today() )
         self.SelbstBehaltReduktionsFaktor = 0.
         self.KinderSummenEndIndex = len(self.KinderGeburtstage)
+        self.BedarfsAnpassung = {}
     
     
     def get_BerBedAufwdg(self, Netto):
@@ -104,6 +106,8 @@ class KindesUnterhalt:
         """berechnet den gaengigen Unterhaltsstufenmodifikator bei ueber 2 
         Kindern"""
         self.UnterhaltsStufenMod = max( [len(self.KinderGeburtstage) - 2, 0] )
+        if self.UnterhaltsStufenMod>0:
+            print('[I] Stufe wird wegen Anzahl der Kinder um 2 reduziert.')
     
     
     def get_UnterhaltsStufe(self):
@@ -121,8 +125,13 @@ class KindesUnterhalt:
             StufeIdx = 0
         else:
             StufeIdx = self.StufeIdx
-        return DusTabZahlBetrag[ StufeIdx, AlterIdx + 2 ] *\
+        ret_ = DusTabZahlBetrag[ StufeIdx, AlterIdx + 2 ] *\
             self.KinderMinUFaktor[idx] # Offset of 2! 
+        if idx in self.BedarfsAnpassung.keys():
+            #print ( 'Bedarf des Kinds ' + str(idx+1) + ' angepasst: ' + \
+            #    str( self.BedarfsAnpassung[idx] ) )
+            ret_ += self.BedarfsAnpassung[idx]
+        return ret_
     
     
     def get_KindesUnterhalt(self):
@@ -153,12 +162,19 @@ class KindesUnterhalt:
                 self.ZahlBetrag = np.array([ self.get_KindesUnterhalt_idx( i ) \
                     for i in range( len( self.KinderGeburtstage) ) ])
                 # pruefen, ob Bedarfskontrollbetrag unterschritten
-                if self.BerNetto - self.ZahlBetrag.sum() < \
-                    DusTabBedarfsKontrollBetrag[self.StufeIdx]:
+                zb_ = self.ZahlBetrag.sum()
+                diff_ = self.BerNetto - zb_ - \
+                    DusTabBedarfsKontrollBetrag[self.StufeIdx]
+                if diff_ < 0:
                     if self.Stufe > 1:
-                        print( 'Unterhaltssumme in Stufe '+str(self.Stufe)+\
-                            ' gefaehrdet Bedarfskontrollbetrag. Stufe wird '+\
-                            'reduziert.' )
+                        print( '[I] Unterhaltssumme in Stufe '+str(self.Stufe)+\
+                            ' von '+str(zb_)+\
+                            '\n    bei bereinigtem Nettoeinkommen von '+\
+                            "{:.2f}".format(self.BerNetto)+\
+                            '\n    uebersteigt Bedarfskontrollbetrag von '+\
+                            str(DusTabBedarfsKontrollBetrag[self.StufeIdx])+\
+                            '\n    um '+"{:.2f}".format(-diff_)+\
+                            '. Stufe wird reduziert.' )
                         self.StufeIdx = self.StufeIdx - 1
                         self.Stufe = self.Stufe - 1
                     else:
