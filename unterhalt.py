@@ -28,7 +28,11 @@ DusTabZahlBetrag = np.array([\
     [       8,           4900,   570,    673,    810,      748,   144],
     [       9,           5300,   608,    718,    862,      804,   152],
     [      10,           5700,   647,    762,    914,      859,   160],
-    ])
+    ], dtype=float)
+
+# Aenderung Kindergeld von 250 auf 255 EUR vom 19.12.2024 ab 01.01.2025:
+DusTabZahlBetrag[:,2:5] = DusTabZahlBetrag[:,2:5] + ( 250 - 255 ) / 2.
+DusTabZahlBetrag[:,5] = DusTabZahlBetrag[:,5] + ( 250 - 255 )
 
 DusTabNotwdgSelbstBehalt            = 1450
 DusTabNotwdgSelbstBehaltWohnKosten  =  520
