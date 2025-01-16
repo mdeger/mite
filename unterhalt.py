@@ -111,13 +111,14 @@ class KindesUnterhalt:
         Kindern"""
         self.UnterhaltsStufenMod = max( [len(self.KinderGeburtstage) - 2, 0] )
         if self.UnterhaltsStufenMod>0:
-            print('[I] Stufe wird wegen Anzahl der Kinder um 2 reduziert.')
+            print('[I] Stufe wird wegen Anzahl der Kinder um '+\
+                str(self.UnterhaltsStufenMod)+' reduziert.')
     
     
     def get_UnterhaltsStufe(self):
         self.StufeIdx = np.searchsorted( DusTabZahlBetrag[:,1], self.BerNetto )\
             - self.UnterhaltsStufenMod
-        self.Stufe = DusTabZahlBetrag[ self.StufeIdx,0 ]
+        self.Stufe = int( DusTabZahlBetrag[ self.StufeIdx,0 ] )
     
     
     def get_KindesUnterhalt_idx( self, idx, MinU=False ):
